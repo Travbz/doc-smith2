@@ -1,0 +1,5 @@
+dir.sh
+project-structure.txt
+.env
+.venv*
+setup.sh
