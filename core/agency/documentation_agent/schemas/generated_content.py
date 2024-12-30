@@ -29,6 +29,7 @@ class DocumentFile(BaseModel):
 
 class GeneratedContent(BaseModel):
     """Complete generated documentation package."""
+    id: str = Field(..., description="Unique identifier for this documentation package")
     repository_url: str = Field(..., description="Source repository URL")
     repository_type: str = Field(..., description="Repository type")
     files: Dict[str, DocumentFile] = Field(..., description="Generated documentation files")

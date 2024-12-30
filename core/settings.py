@@ -1,16 +1,18 @@
-"""Core settings for the DocSmith system."""
-from pathlib import Path
+"""Application settings and configuration."""
 import os
+from pathlib import Path
+from typing import Optional
 import logging
 
 # Base paths
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
+UTIL_DIR = BASE_DIR / 'util'
 
-# Required environment variables
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-GITHUB_USERNAME = os.getenv("GITHUB_USERNAME")
-OPENAI_ORG_ID = os.getenv("OPENAI_ORG_ID")  # Optional
+# Environment variables
+OPENAI_API_KEY: str = os.getenv('OPENAI_API_KEY', '')
+GITHUB_TOKEN: str = os.getenv('GITHUB_TOKEN', '')
+GITHUB_USERNAME: str = os.getenv('GITHUB_USERNAME', '')
+OPENAI_ORG_ID: Optional[str] = os.getenv('OPENAI_ORG_ID')  # Optional
 
 # OpenAI Settings
 DEFAULT_MODEL = "gpt-4-turbo-preview"  # Default fallback model
@@ -42,18 +44,25 @@ AGENT_MAX_TOKENS = {
     "github": 2000  # Git operations need minimal context
 }
 
+# Token Management
 TOKEN_BUFFER = 500
 MAX_TOKENS_PER_REQUEST = 4000
 
-# GitHub Settings
-DEFAULT_BRANCH = "main"
-GIT_DOCS_BRANCH_PREFIX = "docs/update-documentation"
+# Error handling settings
+MAX_RETRIES: int = 3
+RETRY_DELAY: int = 1  # seconds
 
-# Documentation Settings
+# Cache settings
+CACHE_EXPIRY: int = 3600  # 1 hour in seconds
+VALIDATION_CACHE_EXPIRY: int = 86400  # 24 hours in seconds
+
+# Documentation settings
+DEFAULT_BRANCH: str = 'main'
+DOCUMENTATION_BRANCH_PREFIX: str = 'docs/'
+PR_TITLE_PREFIX: str = 'docs: '
 MAX_REVIEW_ITERATIONS = 3
 DOC_REVIEW_MAX_CYCLES = 3  # Maximum number of review cycles per document
 DOC_REVIEW_MIN_QUALITY_SCORE = 0.8  # Minimum quality score to pass review
-
 
 # Review Types
 REVIEW_TYPES = {
@@ -62,7 +71,7 @@ REVIEW_TYPES = {
     "SECURITY": ["security", "api", "deployment"]
 }
 
-# I want to support any file type that could be committed to a git repository
+# Supported file types
 SUPPORTED_FILE_TYPES = (
     '.py', '.js', '.ts', '.go', '.rs', '.java', '.kt', '.swift', '.rb', '.php',
     '.cs', '.html', '.css', '.sql', '.json', '.xml', '.yaml', '.yml', '.md',
@@ -71,18 +80,23 @@ SUPPORTED_FILE_TYPES = (
     '.hcl'
 )
 
-# Output Settings
-DEFAULT_DOCS_PATH = "docs/"
-DEFAULT_README = "README.md"
+# Repository settings
+REPO_CLONE_PATH: Path = UTIL_DIR / 'repos'
+STANDARDS_PATH: Path = UTIL_DIR / 'standards'
+WORKSPACE_PATH = UTIL_DIR / 'workspace'  # Temporary workspace for generated content
+LOGS_PATH = UTIL_DIR / 'logs'
 
 # Performance Settings
 MAX_CONCURRENT_TASKS = 5
 RATE_LIMIT_REQUESTS = 60  # requests per minute
 RATE_LIMIT_TOKENS = 90000  # tokens per minute
 
-# Error handling settings
-MAX_RETRIES = 3
-RETRY_DELAY = 5  # seconds
-
 # Logging Settings
-LOG_LEVEL = logging.INFO  # Can be overridden by environment variable
+LOG_LEVEL = logging.INFO
+
+# Create necessary directories
+UTIL_DIR.mkdir(exist_ok=True)
+REPO_CLONE_PATH.mkdir(exist_ok=True)
+STANDARDS_PATH.mkdir(exist_ok=True)
+WORKSPACE_PATH.mkdir(exist_ok=True)
+LOGS_PATH.mkdir(exist_ok=True)

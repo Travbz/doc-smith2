@@ -1,49 +1,54 @@
 """Logging service for the application."""
 import logging
-from rich.logging import RichHandler
-from rich.console import Console
-from rich.traceback import install as install_rich_traceback
-from core.settings import LOG_LEVEL
+import sys
+from datetime import datetime
+from typing import Optional
+from pathlib import Path
+from core.settings import LOGS_PATH, LOG_LEVEL
 
-# Install rich traceback handler for better error display
-install_rich_traceback(show_locals=True)
-console = Console()
-
-def setup_logger(name: str) -> logging.Logger:
-    """Set up a logger with console output and rich formatting.
-    
-    Args:
-        name: Name of the logger (usually __name__ of the calling module)
-        
-    Returns:
-        Configured logger instance
-    """
+def setup_logger(name: str, level: int = LOG_LEVEL) -> logging.Logger:
+    """Set up a logger with the specified name and level."""
+    # Create logger
     logger = logging.getLogger(name)
-    logger.setLevel(LOG_LEVEL)
-    
-    # Clear any existing handlers
-    logger.handlers.clear()
-    
-    # Console handler with rich formatting
-    console_handler = RichHandler(
-        rich_tracebacks=True,
-        markup=True,
-        show_time=True,
-        show_path=True
-    )
-    console_handler.setLevel(LOG_LEVEL)
-    logger.addHandler(console_handler)
-    
+    logger.setLevel(level)
+
+    # Create console handler with formatting
+    if not logger.handlers:
+        console_handler = logging.StreamHandler(sys.stdout)
+        console_handler.setLevel(level)
+        
+        # Create formatter
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S'
+        )
+        console_handler.setFormatter(formatter)
+        
+        # Add console handler to logger
+        logger.addHandler(console_handler)
+        
+        # Create file handler
+        file_handler = logging.FileHandler(
+            LOGS_PATH / f"{datetime.now().strftime('%Y%m%d')}.log"
+        )
+        file_handler.setLevel(level)
+        file_handler.setFormatter(formatter)
+        
+        # Add file handler to logger
+        logger.addHandler(file_handler)
+
     return logger
 
-def log_exception(logger: logging.Logger, exc: Exception, context: str = ""):
-    """Log an exception with rich formatting and context.
+def log_exception(error: Exception, logger: Optional[logging.Logger] = None) -> None:
+    """Log an exception with full traceback."""
+    if logger is None:
+        logger = logging.getLogger('error_handler')
     
-    Args:
-        logger: Logger instance to use
-        exc: Exception to log
-        context: Optional context about where/why the exception occurred
-    """
-    console.print(f"[red]Exception in {context}:[/red]", style="bold red")
-    console.print_exception()
-    logger.error(f"Exception in {context}: {str(exc)}", exc_info=True)
+    logger.error(
+        f"Exception occurred: {str(error)}",
+        exc_info=True,
+        extra={
+            'error_type': type(error).__name__,
+            'timestamp': datetime.now().isoformat()
+        }
+    )

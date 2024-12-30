@@ -1,0 +1,1466 @@
+2024-12-29 19:43:16 - __main__ - INFO - Validating environment
+2024-12-29 19:43:16 - __main__ - INFO - Initializing documentation agency
+2024-12-29 19:43:16 - __main__ - ERROR - Error: Agency.__init__() got an unexpected keyword argument 'shared_instructions'
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/main.py", line 82, in main
+    agency = Agency(
+             ^^^^^^^
+TypeError: Agency.__init__() got an unexpected keyword argument 'shared_instructions'
+2024-12-29 19:43:37 - __main__ - INFO - Validating environment
+2024-12-29 19:43:37 - __main__ - INFO - Initializing documentation agency
+2024-12-29 19:43:37 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 19:43:37 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:43:38 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:43:40 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:43:43 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:43:43 - __main__ - ERROR - Error: Failed to initialize agency: module 'core.services.event_bus.event_bus' has no attribute 'start'
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 63, in initialize
+    await event_bus.start()
+          ^^^^^^^^^^^^^^^
+AttributeError: module 'core.services.event_bus.event_bus' has no attribute 'start'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/main.py", line 87, in main
+    await agency.initialize()
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 101, in wrapper
+    raise error
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 73, in wrapper
+    return await func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 69, in initialize
+    raise AgencyError(
+core.agency.agency.AgencyError: Failed to initialize agency: module 'core.services.event_bus.event_bus' has no attribute 'start'
+2024-12-29 19:43:43 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 19:44:19 - __main__ - INFO - Validating environment
+2024-12-29 19:44:19 - __main__ - INFO - Initializing documentation agency
+2024-12-29 19:44:19 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 19:44:19 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:44:19 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 19:44:27 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:44:35 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:44:44 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:44:50 - __main__ - ERROR - Error: Failed to initialize agency: Failed to initialize agents: name 'Any' is not defined
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 109, in _initialize_agents
+    from core.agency.review_agent.review_agent import ReviewAgent
+  File "/Users/travops/ai/doc-smith2/core/agency/review_agent/review_agent.py", line 12, in <module>
+    from .tools.review_coordinator import ReviewCoordinator
+  File "/Users/travops/ai/doc-smith2/core/agency/review_agent/tools/review_coordinator.py", line 15, in <module>
+    class ReviewCoordinator:
+  File "/Users/travops/ai/doc-smith2/core/agency/review_agent/tools/review_coordinator.py", line 73, in ReviewCoordinator
+    ) -> Dict[str, Any]:
+                   ^^^
+NameError: name 'Any' is not defined. Did you mean: 'any'?
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 64, in initialize
+    await self._initialize_agents()
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 101, in wrapper
+    raise error
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 73, in wrapper
+    return await func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 123, in _initialize_agents
+    raise AgencyError(
+core.agency.agency.AgencyError: Failed to initialize agents: name 'Any' is not defined
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/main.py", line 87, in main
+    await agency.initialize()
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 101, in wrapper
+    raise error
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 73, in wrapper
+    return await func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 69, in initialize
+    raise AgencyError(
+core.agency.agency.AgencyError: Failed to initialize agency: Failed to initialize agents: name 'Any' is not defined
+2024-12-29 19:44:50 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 19:44:50 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 19:44:50 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 19:46:26 - __main__ - INFO - Validating environment
+2024-12-29 19:46:26 - __main__ - INFO - Initializing documentation agency
+2024-12-29 19:46:26 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 19:46:26 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:46:26 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 19:46:33 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:46:41 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:46:50 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:46:56 - __main__ - ERROR - Error: Failed to initialize agency: Failed to initialize agents: cannot import name 'APIError' from 'core.services.error_handling.error_handler' (/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py)
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 110, in _initialize_agents
+    from core.agency.github_agent.github_agent import GitHubAgent
+  File "/Users/travops/ai/doc-smith2/core/agency/github_agent/github_agent.py", line 16, in <module>
+    from .tools.repository_manager import RepositoryManager
+  File "/Users/travops/ai/doc-smith2/core/agency/github_agent/tools/repository_manager.py", line 12, in <module>
+    from core.services.error_handling.error_handler import (
+ImportError: cannot import name 'APIError' from 'core.services.error_handling.error_handler' (/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 64, in initialize
+    await self._initialize_agents()
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 101, in wrapper
+    raise error
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 73, in wrapper
+    return await func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 123, in _initialize_agents
+    raise AgencyError(
+core.agency.agency.AgencyError: Failed to initialize agents: cannot import name 'APIError' from 'core.services.error_handling.error_handler' (/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/main.py", line 87, in main
+    await agency.initialize()
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 101, in wrapper
+    raise error
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 73, in wrapper
+    return await func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 69, in initialize
+    raise AgencyError(
+core.agency.agency.AgencyError: Failed to initialize agency: Failed to initialize agents: cannot import name 'APIError' from 'core.services.error_handling.error_handler' (/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py)
+2024-12-29 19:46:56 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 19:46:56 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 19:46:56 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 19:47:21 - __main__ - INFO - Validating environment
+2024-12-29 19:47:21 - __main__ - INFO - Initializing documentation agency
+2024-12-29 19:47:21 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 19:47:21 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:47:21 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 19:47:28 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:47:36 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:47:45 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:47:51 - __main__ - ERROR - Error: Failed to initialize agency: Failed to initialize agents: name 'Any' is not defined
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 110, in _initialize_agents
+    from core.agency.github_agent.github_agent import GitHubAgent
+  File "/Users/travops/ai/doc-smith2/core/agency/github_agent/github_agent.py", line 18, in <module>
+    from .tools.comment_manager import CommentManager
+  File "/Users/travops/ai/doc-smith2/core/agency/github_agent/tools/comment_manager.py", line 27, in <module>
+    class CommentManager:
+  File "/Users/travops/ai/doc-smith2/core/agency/github_agent/tools/comment_manager.py", line 43, in CommentManager
+    ) -> Dict[str, Any]:
+                   ^^^
+NameError: name 'Any' is not defined. Did you mean: 'any'?
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 64, in initialize
+    await self._initialize_agents()
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 116, in wrapper
+    raise error
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 88, in wrapper
+    return await func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 123, in _initialize_agents
+    raise AgencyError(
+core.agency.agency.AgencyError: Failed to initialize agents: name 'Any' is not defined
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/main.py", line 87, in main
+    await agency.initialize()
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 116, in wrapper
+    raise error
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 88, in wrapper
+    return await func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 69, in initialize
+    raise AgencyError(
+core.agency.agency.AgencyError: Failed to initialize agency: Failed to initialize agents: name 'Any' is not defined
+2024-12-29 19:47:51 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 19:47:51 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 19:47:51 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 19:48:42 - __main__ - INFO - Validating environment
+2024-12-29 19:48:42 - __main__ - INFO - Initializing documentation agency
+2024-12-29 19:48:42 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 19:48:42 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:48:42 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 19:48:49 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:48:57 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:49:06 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:49:12 - __main__ - ERROR - Error: Failed to initialize agency: Failed to initialize agents: Can't instantiate abstract class ReviewAgent without an implementation for abstract method 'initialize'
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 114, in _initialize_agents
+    self.agents['review'] = ReviewAgent(self)
+                            ^^^^^^^^^^^^^^^^^
+TypeError: Can't instantiate abstract class ReviewAgent without an implementation for abstract method 'initialize'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 64, in initialize
+    await self._initialize_agents()
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 116, in wrapper
+    raise error
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 88, in wrapper
+    return await func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 123, in _initialize_agents
+    raise AgencyError(
+core.agency.agency.AgencyError: Failed to initialize agents: Can't instantiate abstract class ReviewAgent without an implementation for abstract method 'initialize'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/main.py", line 87, in main
+    await agency.initialize()
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 116, in wrapper
+    raise error
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 88, in wrapper
+    return await func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 69, in initialize
+    raise AgencyError(
+core.agency.agency.AgencyError: Failed to initialize agency: Failed to initialize agents: Can't instantiate abstract class ReviewAgent without an implementation for abstract method 'initialize'
+2024-12-29 19:49:12 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 19:49:12 - core.agency.base_agent - INFO - Cleaning up documentation agent
+2024-12-29 19:49:12 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 19:49:12 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 19:51:58 - __main__ - INFO - Validating environment
+2024-12-29 19:51:58 - __main__ - INFO - Initializing documentation agency
+2024-12-29 19:51:58 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 19:51:58 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:51:58 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 19:52:06 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:52:14 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:52:23 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:52:29 - __main__ - ERROR - Error: Failed to initialize agency: Failed to initialize agents: Can't instantiate abstract class GitHubAgent without an implementation for abstract method 'initialize'
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 115, in _initialize_agents
+    self.agents['github'] = GitHubAgent(self)
+                            ^^^^^^^^^^^^^^^^^
+TypeError: Can't instantiate abstract class GitHubAgent without an implementation for abstract method 'initialize'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 64, in initialize
+    await self._initialize_agents()
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 116, in wrapper
+    raise error
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 88, in wrapper
+    return await func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 123, in _initialize_agents
+    raise AgencyError(
+core.agency.agency.AgencyError: Failed to initialize agents: Can't instantiate abstract class GitHubAgent without an implementation for abstract method 'initialize'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/main.py", line 87, in main
+    await agency.initialize()
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 116, in wrapper
+    raise error
+  File "/Users/travops/ai/doc-smith2/core/services/error_handling/error_handler.py", line 88, in wrapper
+    return await func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/travops/ai/doc-smith2/core/agency/agency.py", line 69, in initialize
+    raise AgencyError(
+core.agency.agency.AgencyError: Failed to initialize agency: Failed to initialize agents: Can't instantiate abstract class GitHubAgent without an implementation for abstract method 'initialize'
+2024-12-29 19:52:29 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 19:52:29 - core.agency.base_agent - INFO - Cleaning up documentation agent
+2024-12-29 19:52:29 - core.agency.base_agent - INFO - Cleaning up review agent
+2024-12-29 19:52:29 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 19:52:29 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 19:52:57 - __main__ - INFO - Validating environment
+2024-12-29 19:52:57 - __main__ - INFO - Initializing documentation agency
+2024-12-29 19:52:57 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 19:52:57 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:52:57 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 19:52:57 - core.agency.agency - INFO - Initializing documentation agent
+2024-12-29 19:52:57 - core.agency.documentation_agent.documentation_agent - INFO - Initializing Documentation Agent
+2024-12-29 19:52:57 - core.agency.base_agent - INFO - Initializing documentation agent
+2024-12-29 19:52:57 - core.agency.agency - INFO - Initializing review agent
+2024-12-29 19:52:57 - core.agency.review_agent.review_agent - INFO - Initializing review agent
+2024-12-29 19:52:57 - core.agency.review_agent.review_agent - INFO - Review agent initialized successfully
+2024-12-29 19:52:57 - core.agency.agency - INFO - Initializing github agent
+2024-12-29 19:52:57 - core.agency.github_agent.github_agent - INFO - Initializing GitHub agent
+2024-12-29 19:52:57 - core.agency.github_agent.github_agent - INFO - GitHub agent initialized successfully
+2024-12-29 19:52:57 - core.agency.agency - INFO - Agency initialized successfully
+2024-12-29 19:52:57 - __main__ - INFO - Processing repository: Travbz/doc-smith
+2024-12-29 19:52:57 - __main__ - ERROR - Error: 'Agency' object has no attribute 'process_repository'
+Traceback (most recent call last):
+  File "/Users/travops/ai/doc-smith2/main.py", line 91, in main
+    result = await agency.process_repository(repo_url)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Agency' object has no attribute 'process_repository'
+2024-12-29 19:52:57 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 19:52:57 - core.agency.base_agent - INFO - Cleaning up documentation agent
+2024-12-29 19:52:57 - core.agency.base_agent - INFO - Cleaning up review agent
+2024-12-29 19:52:57 - core.agency.base_agent - INFO - Cleaning up github agent
+2024-12-29 19:52:57 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 19:54:58 - __main__ - INFO - Validating environment
+2024-12-29 19:54:58 - __main__ - INFO - Initializing documentation agency
+2024-12-29 19:54:58 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 19:54:58 - core.agency.agency - INFO - Initializing agency
+2024-12-29 19:54:58 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 19:54:58 - core.agency.agency - INFO - Initializing documentation agent
+2024-12-29 19:54:58 - core.agency.documentation_agent.documentation_agent - INFO - Initializing Documentation Agent
+2024-12-29 19:54:58 - core.agency.base_agent - INFO - Initializing documentation agent
+2024-12-29 19:54:58 - core.agency.agency - INFO - Initializing review agent
+2024-12-29 19:54:58 - core.agency.review_agent.review_agent - INFO - Initializing review agent
+2024-12-29 19:54:58 - core.agency.review_agent.review_agent - INFO - Review agent initialized successfully
+2024-12-29 19:54:58 - core.agency.agency - INFO - Initializing github agent
+2024-12-29 19:54:58 - core.agency.github_agent.github_agent - INFO - Initializing GitHub agent
+2024-12-29 19:54:58 - core.agency.github_agent.github_agent - INFO - GitHub agent initialized successfully
+2024-12-29 19:54:58 - core.agency.agency - INFO - Agency initialized successfully
+2024-12-29 19:54:58 - __main__ - INFO - Processing repository: Travbz/doc-smith
+2024-12-29 19:55:28 - core.agency.agency - ERROR - Error processing repository: Error getting repository: 'GitHubAgent' object has no attribute 'github'
+2024-12-29 19:55:28 - __main__ - ERROR - Documentation generation failed: Error getting repository: 'GitHubAgent' object has no attribute 'github'
+2024-12-29 19:55:28 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 19:55:28 - core.agency.base_agent - INFO - Cleaning up documentation agent
+2024-12-29 19:55:28 - core.agency.base_agent - INFO - Cleaning up review agent
+2024-12-29 19:55:28 - core.agency.base_agent - INFO - Cleaning up github agent
+2024-12-29 19:55:28 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 19:55:28 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 20:01:12 - __main__ - INFO - Validating environment
+2024-12-29 20:01:12 - __main__ - INFO - Initializing documentation agency
+2024-12-29 20:01:12 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 20:01:12 - core.agency.agency - INFO - Initializing agency
+2024-12-29 20:01:12 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 20:01:12 - core.agency.agency - INFO - Initializing documentation agent
+2024-12-29 20:01:12 - core.agency.documentation_agent.documentation_agent - INFO - Initializing Documentation Agent
+2024-12-29 20:01:12 - core.agency.base_agent - INFO - Initializing documentation agent
+2024-12-29 20:01:12 - core.agency.agency - INFO - Initializing review agent
+2024-12-29 20:01:12 - core.agency.review_agent.review_agent - INFO - Initializing review agent
+2024-12-29 20:01:12 - core.agency.review_agent.review_agent - INFO - Review agent initialized successfully
+2024-12-29 20:01:12 - core.agency.agency - INFO - Initializing github agent
+2024-12-29 20:01:12 - core.agency.github_agent.github_agent - INFO - Initializing GitHub agent
+2024-12-29 20:01:12 - core.agency.github_agent.github_agent - INFO - GitHub agent initialized successfully
+2024-12-29 20:01:12 - core.agency.agency - INFO - Agency initialized successfully
+2024-12-29 20:01:12 - __main__ - INFO - Processing repository: Travbz/doc-smith
+2024-12-29 20:01:13 - core.agency.github_agent.tools.repository_manager - INFO - Cloned repository: Travbz/doc-smith
+2024-12-29 20:02:07 - core.agency.agency - ERROR - Error processing repository: Failed to generate documentation: Failed to analyze repository: module 'core.services.cache.cache_manager' has no attribute 'get'
+2024-12-29 20:02:07 - __main__ - ERROR - Documentation generation failed: Failed to generate documentation: Failed to analyze repository: module 'core.services.cache.cache_manager' has no attribute 'get'
+2024-12-29 20:02:07 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 20:02:07 - core.agency.base_agent - INFO - Cleaning up documentation agent
+2024-12-29 20:02:07 - core.agency.base_agent - INFO - Cleaning up review agent
+2024-12-29 20:02:07 - core.agency.base_agent - INFO - Cleaning up github agent
+2024-12-29 20:02:07 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 20:02:07 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 20:03:59 - __main__ - INFO - Validating environment
+2024-12-29 20:03:59 - __main__ - INFO - Initializing documentation agency
+2024-12-29 20:03:59 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 20:03:59 - core.agency.agency - INFO - Initializing agency
+2024-12-29 20:03:59 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 20:03:59 - core.agency.agency - INFO - Initializing documentation agent
+2024-12-29 20:03:59 - core.agency.documentation_agent.documentation_agent - INFO - Initializing Documentation Agent
+2024-12-29 20:03:59 - core.agency.base_agent - INFO - Initializing documentation agent
+2024-12-29 20:03:59 - core.agency.agency - INFO - Initializing review agent
+2024-12-29 20:03:59 - core.agency.review_agent.review_agent - INFO - Initializing review agent
+2024-12-29 20:03:59 - core.agency.review_agent.review_agent - INFO - Review agent initialized successfully
+2024-12-29 20:03:59 - core.agency.agency - INFO - Initializing github agent
+2024-12-29 20:03:59 - core.agency.github_agent.github_agent - INFO - Initializing GitHub agent
+2024-12-29 20:03:59 - core.agency.github_agent.github_agent - INFO - GitHub agent initialized successfully
+2024-12-29 20:03:59 - core.agency.agency - INFO - Agency initialized successfully
+2024-12-29 20:03:59 - __main__ - INFO - Processing repository: Travbz/doc-smith
+2024-12-29 20:04:00 - core.agency.github_agent.tools.repository_manager - INFO - Cloned repository: Travbz/doc-smith
+2024-12-29 20:04:06 - core.agency.agency - ERROR - Error processing repository: Failed to generate documentation: Failed to analyze directory /var/folders/7q/jw6cmjxn3y128jz387tgrtx80000gn/T/docsmith_ju4xhr0o: 2 validation errors for FileInfo
+type
+  Field required [type=missing, input_value={'name': 'setup.sh', 'pat...'setup.sh', 'size': 856}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+last_modified
+  Field required [type=missing, input_value={'name': 'setup.sh', 'pat...'setup.sh', 'size': 856}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:04:06 - __main__ - ERROR - Documentation generation failed: Failed to generate documentation: Failed to analyze directory /var/folders/7q/jw6cmjxn3y128jz387tgrtx80000gn/T/docsmith_ju4xhr0o: 2 validation errors for FileInfo
+type
+  Field required [type=missing, input_value={'name': 'setup.sh', 'pat...'setup.sh', 'size': 856}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+last_modified
+  Field required [type=missing, input_value={'name': 'setup.sh', 'pat...'setup.sh', 'size': 856}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:04:06 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 20:04:06 - core.agency.base_agent - INFO - Cleaning up documentation agent
+2024-12-29 20:04:06 - core.agency.base_agent - INFO - Cleaning up review agent
+2024-12-29 20:04:06 - core.agency.base_agent - INFO - Cleaning up github agent
+2024-12-29 20:04:06 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 20:04:06 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 20:04:55 - __main__ - INFO - Validating environment
+2024-12-29 20:04:55 - __main__ - INFO - Initializing documentation agency
+2024-12-29 20:04:55 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 20:04:55 - core.agency.agency - INFO - Initializing agency
+2024-12-29 20:04:55 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 20:04:56 - core.agency.agency - INFO - Initializing documentation agent
+2024-12-29 20:04:56 - core.agency.documentation_agent.documentation_agent - INFO - Initializing Documentation Agent
+2024-12-29 20:04:56 - core.agency.base_agent - INFO - Initializing documentation agent
+2024-12-29 20:04:56 - core.agency.agency - INFO - Initializing review agent
+2024-12-29 20:04:56 - core.agency.review_agent.review_agent - INFO - Initializing review agent
+2024-12-29 20:04:56 - core.agency.review_agent.review_agent - INFO - Review agent initialized successfully
+2024-12-29 20:04:56 - core.agency.agency - INFO - Initializing github agent
+2024-12-29 20:04:56 - core.agency.github_agent.github_agent - INFO - Initializing GitHub agent
+2024-12-29 20:04:56 - core.agency.github_agent.github_agent - INFO - GitHub agent initialized successfully
+2024-12-29 20:04:56 - core.agency.agency - INFO - Agency initialized successfully
+2024-12-29 20:04:56 - __main__ - INFO - Processing repository: Travbz/doc-smith
+2024-12-29 20:04:56 - core.agency.github_agent.tools.repository_manager - INFO - Cloned repository: Travbz/doc-smith
+2024-12-29 20:05:02 - core.agency.agency - ERROR - Error processing repository: Failed to generate documentation: Failed to analyze directory /var/folders/7q/jw6cmjxn3y128jz387tgrtx80000gn/T/docsmith_6mzavljf: Failed to analyze directory /var/folders/7q/jw6cmjxn3y128jz387tgrtx80000gn/T/docsmith_6mzavljf/core: Failed to analyze directory /var/folders/7q/jw6cmjxn3y128jz387tgrtx80000gn/T/docsmith_6mzavljf/core/workflows: 1 validation error for DirectoryInfo
+subdirectories.0
+  Input should be a valid string [type=string_type, input_value=DirectoryInfo(path='/var/...1')], subdirectories=[]), input_type=DirectoryInfo]
+    For further information visit https://errors.pydantic.dev/2.8/v/string_type
+2024-12-29 20:05:02 - __main__ - ERROR - Documentation generation failed: Failed to generate documentation: Failed to analyze directory /var/folders/7q/jw6cmjxn3y128jz387tgrtx80000gn/T/docsmith_6mzavljf: Failed to analyze directory /var/folders/7q/jw6cmjxn3y128jz387tgrtx80000gn/T/docsmith_6mzavljf/core: Failed to analyze directory /var/folders/7q/jw6cmjxn3y128jz387tgrtx80000gn/T/docsmith_6mzavljf/core/workflows: 1 validation error for DirectoryInfo
+subdirectories.0
+  Input should be a valid string [type=string_type, input_value=DirectoryInfo(path='/var/...1')], subdirectories=[]), input_type=DirectoryInfo]
+    For further information visit https://errors.pydantic.dev/2.8/v/string_type
+2024-12-29 20:05:02 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 20:05:02 - core.agency.base_agent - INFO - Cleaning up documentation agent
+2024-12-29 20:05:02 - core.agency.base_agent - INFO - Cleaning up review agent
+2024-12-29 20:05:02 - core.agency.base_agent - INFO - Cleaning up github agent
+2024-12-29 20:05:02 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 20:05:02 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 20:08:30 - __main__ - INFO - Validating environment
+2024-12-29 20:08:30 - __main__ - INFO - Initializing documentation agency
+2024-12-29 20:08:30 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 20:08:30 - core.agency.agency - INFO - Initializing agency
+2024-12-29 20:08:30 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 20:08:30 - core.agency.agency - INFO - Initializing documentation agent
+2024-12-29 20:08:30 - core.agency.documentation_agent.documentation_agent - INFO - Initializing Documentation Agent
+2024-12-29 20:08:30 - core.agency.base_agent - INFO - Initializing documentation agent
+2024-12-29 20:08:30 - core.agency.agency - INFO - Initializing review agent
+2024-12-29 20:08:30 - core.agency.review_agent.review_agent - INFO - Initializing review agent
+2024-12-29 20:08:30 - core.agency.review_agent.review_agent - INFO - Review agent initialized successfully
+2024-12-29 20:08:30 - core.agency.agency - INFO - Initializing github agent
+2024-12-29 20:08:30 - core.agency.github_agent.github_agent - INFO - Initializing GitHub agent
+2024-12-29 20:08:30 - core.agency.github_agent.github_agent - INFO - GitHub agent initialized successfully
+2024-12-29 20:08:30 - core.agency.agency - INFO - Agency initialized successfully
+2024-12-29 20:08:30 - __main__ - INFO - Processing repository: Travbz/doc-smith
+2024-12-29 20:08:31 - core.agency.github_agent.tools.repository_manager - INFO - Cloned repository: Travbz/doc-smith
+2024-12-29 20:08:37 - core.agency.agency - ERROR - Error processing repository: Failed to generate documentation: Failed to extract patterns: 'Travbz/doc-smith'
+2024-12-29 20:08:37 - __main__ - ERROR - Documentation generation failed: Failed to generate documentation: Failed to extract patterns: 'Travbz/doc-smith'
+2024-12-29 20:08:37 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 20:08:37 - core.agency.base_agent - INFO - Cleaning up documentation agent
+2024-12-29 20:08:37 - core.agency.base_agent - INFO - Cleaning up review agent
+2024-12-29 20:08:37 - core.agency.base_agent - INFO - Cleaning up github agent
+2024-12-29 20:08:37 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 20:08:37 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 20:09:32 - __main__ - INFO - Validating environment
+2024-12-29 20:09:32 - __main__ - INFO - Initializing documentation agency
+2024-12-29 20:09:32 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 20:09:32 - core.agency.agency - INFO - Initializing agency
+2024-12-29 20:09:32 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 20:09:32 - core.agency.agency - INFO - Initializing documentation agent
+2024-12-29 20:09:32 - core.agency.documentation_agent.documentation_agent - INFO - Initializing Documentation Agent
+2024-12-29 20:09:32 - core.agency.base_agent - INFO - Initializing documentation agent
+2024-12-29 20:09:32 - core.agency.agency - INFO - Initializing review agent
+2024-12-29 20:09:32 - core.agency.review_agent.review_agent - INFO - Initializing review agent
+2024-12-29 20:09:32 - core.agency.review_agent.review_agent - INFO - Review agent initialized successfully
+2024-12-29 20:09:32 - core.agency.agency - INFO - Initializing github agent
+2024-12-29 20:09:32 - core.agency.github_agent.github_agent - INFO - Initializing GitHub agent
+2024-12-29 20:09:32 - core.agency.github_agent.github_agent - INFO - GitHub agent initialized successfully
+2024-12-29 20:09:32 - core.agency.agency - INFO - Agency initialized successfully
+2024-12-29 20:09:32 - __main__ - INFO - Processing repository: Travbz/doc-smith
+2024-12-29 20:09:33 - core.agency.github_agent.tools.repository_manager - INFO - Cloned repository: Travbz/doc-smith
+2024-12-29 20:12:03 - core.agency.agency - ERROR - Error processing repository: Failed to generate documentation: Standards directory not found: standards
+2024-12-29 20:12:03 - __main__ - ERROR - Documentation generation failed: Failed to generate documentation: Standards directory not found: standards
+2024-12-29 20:12:03 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 20:12:03 - core.agency.base_agent - INFO - Cleaning up documentation agent
+2024-12-29 20:12:03 - core.agency.base_agent - INFO - Cleaning up review agent
+2024-12-29 20:12:03 - core.agency.base_agent - INFO - Cleaning up github agent
+2024-12-29 20:12:03 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 20:12:03 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 20:23:24 - __main__ - INFO - Validating environment
+2024-12-29 20:23:24 - __main__ - INFO - Initializing documentation agency
+2024-12-29 20:23:24 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 20:23:24 - core.agency.agency - INFO - Initializing agency
+2024-12-29 20:23:24 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 20:23:25 - core.agency.agency - INFO - Initializing documentation agent
+2024-12-29 20:23:25 - core.agency.documentation_agent.documentation_agent - INFO - Initializing Documentation Agent
+2024-12-29 20:23:25 - core.agency.base_agent - INFO - Initializing documentation agent
+2024-12-29 20:23:25 - core.agency.agency - INFO - Initializing review agent
+2024-12-29 20:23:25 - core.agency.review_agent.review_agent - INFO - Initializing review agent
+2024-12-29 20:23:25 - core.agency.review_agent.review_agent - INFO - Review agent initialized successfully
+2024-12-29 20:23:25 - core.agency.agency - INFO - Initializing github agent
+2024-12-29 20:23:25 - core.agency.github_agent.github_agent - INFO - Initializing GitHub agent
+2024-12-29 20:23:25 - core.agency.github_agent.github_agent - INFO - GitHub agent initialized successfully
+2024-12-29 20:23:25 - core.agency.agency - INFO - Agency initialized successfully
+2024-12-29 20:23:25 - __main__ - INFO - Processing repository: Travbz/doc-smith
+2024-12-29 20:23:25 - core.agency.github_agent.tools.repository_manager - INFO - Cloned repository: Travbz/doc-smith
+2024-12-29 20:23:25 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:25 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:26 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:26 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:28 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:28 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:31 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:31 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:32 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:32 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:33 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:33 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:35 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:35 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:38 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:38 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:40 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:40 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:41 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:41 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:43 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:43 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:46 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:46 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:49 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:49 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:50 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:50 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:52 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:52 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:55 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/unknown.yaml: 7 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Generic Documen..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:23:55 - core.agency.documentation_agent.tools.standard_selector - ERROR - Error loading standard from core/util/standards/python.yaml: 11 validation errors for DocumentationStandard
+rules
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.file_name
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.0.applies_to
+  Field required [type=missing, input_value={'template_id': 'readme',...n', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.file_name
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.1.applies_to
+  Field required [type=missing, input_value={'template_id': 'module_d...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.file_name
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.2.applies_to
+  Field required [type=missing, input_value={'template_id': 'function...d', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.file_name
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+templates.3.applies_to
+  Field required [type=missing, input_value={'template_id': 'class_do...s', 'required': False}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+optional_files
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+file_structure
+  Field required [type=missing, input_value={'name': 'Python Document..., 'required': False}]}]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.8/v/missing
+2024-12-29 20:31:28 - __main__ - INFO - Validating environment
+2024-12-29 20:31:28 - __main__ - INFO - Initializing documentation agency
+2024-12-29 20:31:28 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 20:31:28 - core.agency.agency - INFO - Initializing agency
+2024-12-29 20:31:28 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 20:31:28 - core.agency.agency - INFO - Initializing documentation agent
+2024-12-29 20:31:28 - core.agency.documentation_agent.documentation_agent - INFO - Initializing Documentation Agent
+2024-12-29 20:31:28 - core.agency.base_agent - INFO - Initializing documentation agent
+2024-12-29 20:31:28 - core.agency.agency - INFO - Initializing review agent
+2024-12-29 20:31:28 - core.agency.review_agent.review_agent - INFO - Initializing review agent
+2024-12-29 20:31:28 - core.agency.review_agent.review_agent - INFO - Review agent initialized successfully
+2024-12-29 20:31:28 - core.agency.agency - INFO - Initializing github agent
+2024-12-29 20:31:28 - core.agency.github_agent.github_agent - INFO - Initializing GitHub agent
+2024-12-29 20:31:28 - core.agency.github_agent.github_agent - INFO - GitHub agent initialized successfully
+2024-12-29 20:31:28 - core.agency.agency - INFO - Agency initialized successfully
+2024-12-29 20:31:28 - __main__ - INFO - Processing repository: Travbz/doc-smith
+2024-12-29 20:31:28 - core.agency.github_agent.tools.repository_manager - INFO - Cloned repository: Travbz/doc-smith
+2024-12-29 20:32:23 - core.agency.agency - ERROR - Error processing repository: Failed to generate documentation: Failed to select standard: 'RepositoryAnalysis' object has no attribute 'get'
+2024-12-29 20:32:23 - __main__ - ERROR - Documentation generation failed: Failed to generate documentation: Failed to select standard: 'RepositoryAnalysis' object has no attribute 'get'
+2024-12-29 20:32:23 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 20:32:23 - core.agency.base_agent - INFO - Cleaning up documentation agent
+2024-12-29 20:32:23 - core.agency.base_agent - INFO - Cleaning up review agent
+2024-12-29 20:32:23 - core.agency.base_agent - INFO - Cleaning up github agent
+2024-12-29 20:32:23 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 20:32:23 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 20:37:14 - __main__ - INFO - Validating environment
+2024-12-29 20:37:14 - __main__ - INFO - Initializing documentation agency
+2024-12-29 20:37:14 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 20:37:14 - core.agency.agency - INFO - Initializing agency
+2024-12-29 20:37:14 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 20:37:14 - core.agency.agency - INFO - Initializing documentation agent
+2024-12-29 20:37:14 - core.agency.documentation_agent.documentation_agent - INFO - Initializing Documentation Agent
+2024-12-29 20:37:14 - core.agency.base_agent - INFO - Initializing documentation agent
+2024-12-29 20:37:14 - core.agency.agency - INFO - Initializing review agent
+2024-12-29 20:37:14 - core.agency.review_agent.review_agent - INFO - Initializing review agent
+2024-12-29 20:37:14 - core.agency.review_agent.review_agent - INFO - Review agent initialized successfully
+2024-12-29 20:37:14 - core.agency.agency - INFO - Initializing github agent
+2024-12-29 20:37:14 - core.agency.github_agent.github_agent - INFO - Initializing GitHub agent
+2024-12-29 20:37:14 - core.agency.github_agent.github_agent - INFO - GitHub agent initialized successfully
+2024-12-29 20:37:14 - core.agency.agency - INFO - Agency initialized successfully
+2024-12-29 20:37:14 - __main__ - INFO - Processing repository: Travbz/doc-smith
+2024-12-29 20:37:15 - core.agency.github_agent.tools.repository_manager - INFO - Cloned repository: Travbz/doc-smith
+2024-12-29 20:37:21 - core.agency.agency - ERROR - Error processing repository: Failed to generate documentation: No documentation standard found for repository type: Travbz/doc-smith
+2024-12-29 20:37:21 - __main__ - ERROR - Documentation generation failed: Failed to generate documentation: No documentation standard found for repository type: Travbz/doc-smith
+2024-12-29 20:37:21 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 20:37:21 - core.agency.base_agent - INFO - Cleaning up documentation agent
+2024-12-29 20:37:21 - core.agency.base_agent - INFO - Cleaning up review agent
+2024-12-29 20:37:21 - core.agency.base_agent - INFO - Cleaning up github agent
+2024-12-29 20:37:21 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 20:37:21 - core.services.event_bus.event_bus - INFO - Event bus stopped
+2024-12-29 20:38:43 - __main__ - INFO - Validating environment
+2024-12-29 20:38:43 - __main__ - INFO - Initializing documentation agency
+2024-12-29 20:38:43 - core.agency.agency - INFO - Agency manifesto loaded successfully
+2024-12-29 20:38:43 - core.agency.agency - INFO - Initializing agency
+2024-12-29 20:38:43 - core.services.event_bus.event_bus - INFO - Event bus started
+2024-12-29 20:38:43 - core.agency.agency - INFO - Initializing documentation agent
+2024-12-29 20:38:43 - core.agency.documentation_agent.documentation_agent - INFO - Initializing Documentation Agent
+2024-12-29 20:38:43 - core.agency.base_agent - INFO - Initializing documentation agent
+2024-12-29 20:38:43 - core.agency.agency - INFO - Initializing review agent
+2024-12-29 20:38:43 - core.agency.review_agent.review_agent - INFO - Initializing review agent
+2024-12-29 20:38:43 - core.agency.review_agent.review_agent - INFO - Review agent initialized successfully
+2024-12-29 20:38:43 - core.agency.agency - INFO - Initializing github agent
+2024-12-29 20:38:43 - core.agency.github_agent.github_agent - INFO - Initializing GitHub agent
+2024-12-29 20:38:43 - core.agency.github_agent.github_agent - INFO - GitHub agent initialized successfully
+2024-12-29 20:38:43 - core.agency.agency - INFO - Agency initialized successfully
+2024-12-29 20:38:43 - __main__ - INFO - Processing repository: Travbz/doc-smith
+2024-12-29 20:38:44 - core.agency.github_agent.tools.repository_manager - INFO - Cloned repository: Travbz/doc-smith
+2024-12-29 20:38:44 - core.agency.documentation_agent.tools.content_generator - INFO - Generating documentation using standard: Python Documentation Standard
+2024-12-29 20:38:45 - core.agency.documentation_agent.tools.content_generator - INFO - Generating documentation using standard: Python Documentation Standard
+2024-12-29 20:38:47 - core.agency.documentation_agent.tools.content_generator - INFO - Generating documentation using standard: Python Documentation Standard
+2024-12-29 20:38:50 - core.agency.documentation_agent.tools.content_generator - INFO - Generating documentation using standard: Python Documentation Standard
+2024-12-29 20:38:57 - core.agency.documentation_agent.tools.content_generator - INFO - Generating documentation using standard: Python Documentation Standard
+2024-12-29 20:38:58 - core.agency.documentation_agent.tools.content_generator - INFO - Generating documentation using standard: Python Documentation Standard
+2024-12-29 20:39:00 - core.agency.documentation_agent.tools.content_generator - INFO - Generating documentation using standard: Python Documentation Standard
+2024-12-29 20:39:00 - core.agency.agency - INFO - Cleaning up agency resources
+2024-12-29 20:39:00 - core.agency.base_agent - INFO - Cleaning up documentation agent
+2024-12-29 20:39:00 - core.agency.base_agent - INFO - Cleaning up review agent
+2024-12-29 20:39:00 - core.agency.base_agent - INFO - Cleaning up github agent
+2024-12-29 20:39:00 - core.services.event_bus.event_bus - INFO - Event processing stopped
+2024-12-29 20:39:00 - core.services.event_bus.event_bus - INFO - Event bus stopped

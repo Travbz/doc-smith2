@@ -1,83 +1,176 @@
-"""GitHub Agent for managing repository operations."""
+"""GitHub agent for handling repository operations."""
 from typing import Dict, Any
 from datetime import datetime
+import subprocess
 
+from core.services.event_bus.event_bus import EventBus
 from core.services.logging import setup_logger
-from core.services.event_bus import event_bus
-
+from core.agency.base_agent import BaseAgent
 from .tools.repository_manager import RepositoryManager
 from .tools.pull_request_manager import PullRequestManager
-from .tools.branch_manager import BranchManager
+from core.agency.documentation_agent.schemas.generated_content import GeneratedContent
 
 logger = setup_logger(__name__)
 
-class GitHubAgent:
-    """Agent responsible for GitHub documentation operations."""
+class GitHubAgent(BaseAgent):
+    """Agent responsible for GitHub operations."""
 
-    def __init__(self, agency):
-        """Initialize the GitHub Agent."""
-        self.agency = agency
-        
-        # Initialize tools
-        self.repo_manager = RepositoryManager(self)
-        self.pr_manager = PullRequestManager(self)
-        self.branch_manager = BranchManager(self)
+    def __init__(self, event_bus: EventBus):
+        """Initialize GitHub agent."""
+        super().__init__("github", event_bus)
+        self.repository_manager = RepositoryManager(self)
+        self.pull_request_manager = PullRequestManager(self)
+
+    async def _initialize_tools(self) -> None:
+        """Initialize GitHub tools."""
+        pass
 
     async def initialize(self) -> None:
         """Initialize the agent."""
-        logger.info("Initializing GitHub Agent")
-        try:
-            # Subscribe to relevant events
-            event_bus.subscribe("documentation.ready", self._handle_documentation_ready)
-            logger.info("GitHub Agent initialized successfully")
-        except Exception as e:
-            logger.error(f"Error initializing GitHub Agent: {str(e)}")
-            raise
-
-    async def process_repository(self, repo_url: str) -> Dict[str, Any]:
-        """Process a repository for documentation."""
-        try:
-            # Clone repository
-            clone_result = await self.repo_manager.clone_repository(repo_url)
-            if clone_result["status"] != "success":
-                raise ValueError(f"Failed to clone repository: {clone_result.get('error')}")
-
-            return {
-                "status": "success",
-                "data": clone_result["data"]
-            }
-
-        except Exception as e:
-            logger.error(f"Error processing repository: {str(e)}")
-            return {
-                "status": "error",
-                "error": str(e)
-            }
+        await super().initialize()
+        await self.register_event_handler("documentation.ready", self._handle_documentation_ready)
 
     async def _handle_documentation_ready(self, event: Dict) -> None:
         """Handle documentation ready for PR creation."""
         try:
-            documentation = event["data"]["documentation"]
-            repo_info = event["data"]["repository"]
-            
-            # Create PR with documentation
-            pr_result = await self.pr_manager.create_documentation_pr(
-                documentation,
-                repo_info
+            documentation = event.get("documentation")
+            repository_url = event.get("repository_url")
+            review_cycle = event.get("review_cycle")
+
+            if not all([documentation, repository_url, review_cycle]):
+                logger.error("Missing required data in documentation.ready event")
+                logger.error(f"Event data: {event}")
+                return
+
+            # Create PR with documentation changes
+            pr_result = await self._create_pull_request(
+                documentation=documentation,
+                repository_url=repository_url,
+                review_cycle=review_cycle
             )
-            
-            if pr_result["status"] == "success":
-                # Notify PR created
-                await event_bus.publish({
-                    "type": "github.pr_created",
-                    "source": "github_agent",
-                    "data": pr_result["data"]
-                })
+
+            # Publish PR created event
+            await self._publish_event(
+                "pull_request.created",
+                {
+                    "repository_url": repository_url,
+                    "pull_request_url": pr_result["pull_request_url"],
+                    "pull_request_number": pr_result["pull_request_number"]
+                }
+            )
 
         except Exception as e:
             logger.error(f"Error handling documentation ready: {str(e)}")
-            await event_bus.publish({
-                "type": "github.error",
-                "source": "github_agent",
-                "data": {"error": str(e)}
-            })
+            if repository_url:
+                await self._publish_event(
+                    "pull_request.failed",
+                    {
+                        "repository_url": repository_url,
+                        "error": str(e)
+                    }
+                )
+
+    async def _create_pull_request(
+        self,
+        documentation: GeneratedContent,
+        repository_url: str,
+        review_cycle: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Create a pull request with documentation changes.
+        
+        Args:
+            documentation: Generated documentation content
+            repository_url: Repository URL
+            review_cycle: Review cycle information
+            
+        Returns:
+            Dictionary containing pull request information
+        """
+        try:
+            # Clone repository
+            clone_result = await self.repository_manager.clone_repository(repository_url)
+            if not clone_result["success"]:
+                raise Exception(f"Failed to clone repository: {clone_result.get('error')}")
+                
+            repo_path = clone_result["data"]["local_path"]
+            
+            # Create branch for changes
+            branch_name = f"docs/update-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+            await self.repository_manager.create_branch(repo_path, branch_name)
+            
+            # Write documentation files
+            for file_path, file_info in documentation.files.items():
+                await self.repository_manager.write_file(
+                    repo_path,
+                    file_path,
+                    file_info.content
+                )
+                
+            # Commit changes
+            commit_message = "docs: update documentation\n\nAutomatically generated by DocSmith"
+            await self.repository_manager.commit_changes(repo_path, commit_message)
+            
+            # Push changes
+            await self.repository_manager.push_changes(repo_path, branch_name)
+            
+            # Create pull request using GitHub API
+            pr_description = self._generate_pr_description(documentation, review_cycle)
+            
+            # Use GitHub CLI to create PR
+            result = subprocess.run(
+                [
+                    "gh", "pr", "create",
+                    "--title", "Update Documentation",
+                    "--body", pr_description,
+                    "--base", clone_result["data"]["default_branch"],
+                    "--head", branch_name,
+                    "--repo", repository_url
+                ],
+                cwd=repo_path,
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            # Extract PR URL and number from output
+            pr_url = result.stdout.strip()
+            pr_number = int(pr_url.split("/")[-1])
+            
+            return {
+                "success": True,
+                "pull_request_url": pr_url,
+                "pull_request_number": pr_number
+            }
+            
+        except Exception as e:
+            logger.error(f"Error creating pull request: {str(e)}")
+            raise
+
+    def _generate_pr_description(
+        self,
+        documentation: GeneratedContent,
+        review_cycle: Dict[str, Any]
+    ) -> str:
+        """Generate pull request description."""
+        description = "# Documentation Update\n\n"
+        description += "This PR updates the repository documentation using Doc-Smith.\n\n"
+        description += "## Details\n\n"
+        description += f"- Repository Type: {documentation.repository_type}\n"
+        description += f"- Documentation Version: {documentation.documentation_version}\n"
+        description += f"- Quality Score: {review_cycle['quality_trend'][-1]:.2f}\n\n"
+        
+        description += "## Files Updated\n\n"
+        for file_path in documentation.files.keys():
+            description += f"- {file_path}\n"
+        
+        description += "\n## Review Process\n\n"
+        description += f"- Review Iterations: {len(review_cycle['quality_trend'])}\n"
+        description += f"- Final Quality Score: {review_cycle['quality_trend'][-1]:.2f}\n"
+        description += f"- Review Status: {review_cycle['overall_status']}\n"
+        
+        return description
+
+    async def cleanup(self) -> None:
+        """Cleanup agent resources."""
+        await self.repository_manager.cleanup()
+        await super().cleanup()

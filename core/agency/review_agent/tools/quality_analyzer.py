@@ -10,6 +10,7 @@ from ..schemas.quality_metrics import (
     DocumentMetrics,
     QualityAssessment
 )
+from core.agency.documentation_agent.schemas.generated_content import GeneratedContent, DocumentFile
 
 logger = setup_logger(__name__)
 
@@ -28,14 +29,14 @@ class QualityAnalyzer:
 
     async def analyze_documentation(
         self,
-        documentation: Dict[str, str],
+        documentation: GeneratedContent,
         repository_type: str
     ) -> QualityAssessment:
         """
         Analyze documentation quality.
         
         Args:
-            documentation: Documentation content by file
+            documentation: Generated documentation content
             repository_type: Type of repository
             
         Returns:
@@ -44,9 +45,9 @@ class QualityAnalyzer:
         try:
             documents = {}
             
-            for file_path, content in documentation.items():
+            for file_path, doc_file in documentation.files.items():
                 # Analyze individual document
-                doc_metrics = await self._analyze_document(content, repository_type)
+                doc_metrics = await self._analyze_document(doc_file, repository_type)
                 documents[file_path] = doc_metrics
 
             # Calculate overall quality score
@@ -65,9 +66,11 @@ class QualityAnalyzer:
             logger.error(f"Error analyzing documentation: {str(e)}")
             raise
 
-    async def _analyze_document(self, content: str, repository_type: str) -> DocumentMetrics:
+    async def _analyze_document(self, doc_file: DocumentFile, repository_type: str) -> DocumentMetrics:
         """Analyze a single documentation file."""
         try:
+            content = doc_file.content
+            
             # Calculate content metrics
             content_metrics = await self._analyze_content(content)
             
@@ -90,7 +93,7 @@ class QualityAnalyzer:
             document_score = sum(scores) / len(scores)
             
             return DocumentMetrics(
-                file_path="",  # Will be set by caller
+                file_path=doc_file.path,
                 overall_content=content_metrics,
                 overall_structure=structure_metrics,
                 overall_code=code_metrics,

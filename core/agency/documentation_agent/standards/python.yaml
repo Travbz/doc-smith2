@@ -1,0 +1,161 @@
+name: Python Documentation Standard
+description: Standard for Python repository documentation
+version: 1.0.0
+applies_to:
+  - python
+
+templates:
+  - name: README Template
+    file_name: README.md
+    template_id: readme
+    applies_to:
+      - python
+    content: |
+      # ${project_name}
+
+      ${project_description}
+
+      ## Installation
+
+      ```bash
+      pip install -r requirements.txt
+      ```
+
+      ## Usage
+
+      ```python
+      ${usage_example}
+      ```
+
+      ## Project Structure
+
+      ${project_structure}
+
+      ## Contributing
+
+      ${contributing_guidelines}
+
+      ## License
+
+      ${license_info}
+
+  - name: Module Documentation
+    file_name: docs/api.md
+    template_id: module_doc
+    applies_to:
+      - python
+    content: |
+      # API Documentation
+
+      ## Modules
+
+      ${module_documentation}
+
+      ## Classes
+
+      ${class_documentation}
+
+      ## Functions
+
+      ${function_documentation}
+
+  - name: Configuration Guide
+    file_name: docs/configuration.md
+    template_id: config_doc
+    applies_to:
+      - python
+    content: |
+      # Configuration Guide
+
+      ## Environment Variables
+
+      ${environment_variables}
+
+      ## Configuration Files
+
+      ${config_files}
+
+      ## Dependencies
+
+      ${dependencies}
+
+rules:
+  - name: Required Sections
+    type: validation
+    applies_to:
+      - README.md
+    criteria:
+      - Installation instructions must be present
+      - Usage examples must be provided
+      - Project structure must be documented
+
+  - name: Code Examples
+    type: validation
+    applies_to:
+      - README.md
+      - docs/api.md
+    criteria:
+      - All code blocks must have language specifiers
+      - Examples must be runnable
+      - Output should be shown where relevant
+
+variables:
+  - name: project_name
+    description: Name of the project
+    required: true
+    source: repository
+
+  - name: project_description
+    description: Brief description of the project
+    required: true
+    source: analysis
+
+  - name: usage_example
+    description: Example code showing basic usage
+    required: true
+    source: analysis
+
+  - name: project_structure
+    description: Tree view of important project files and directories
+    required: true
+    source: analysis
+
+  - name: contributing_guidelines
+    description: Guidelines for contributing to the project
+    required: true
+    source: template
+
+  - name: license_info
+    description: Project license information
+    required: true
+    source: repository
+
+  - name: module_documentation
+    description: Documentation for Python modules
+    required: true
+    source: analysis
+
+  - name: class_documentation
+    description: Documentation for Python classes
+    required: true
+    source: analysis
+
+  - name: function_documentation
+    description: Documentation for Python functions
+    required: true
+    source: analysis
+
+  - name: environment_variables
+    description: List of environment variables and their usage
+    required: true
+    source: analysis
+
+  - name: config_files
+    description: Documentation of configuration files
+    required: true
+    source: analysis
+
+  - name: dependencies
+    description: Project dependencies and versions
+    required: true
+    source: analysis 

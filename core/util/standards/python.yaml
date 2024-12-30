@@ -1,0 +1,184 @@
+name: Python Documentation Standard
+version: "1.0"
+repository_type: python
+description: Standard for Python project documentation
+required_files:
+  - README.md
+  - requirements.txt
+  - docs/
+optional_files:
+  - CONTRIBUTING.md
+  - LICENSE
+  - setup.py
+  - tests/
+file_structure:
+  docs: "Documentation files directory"
+  tests: "Test files directory"
+  src: "Source code directory"
+rules:
+  - rule_id: "py_docstrings"
+    description: "All Python modules, classes, and functions must have docstrings"
+    required: true
+    applies_to: ["*.py"]
+    example: |
+      def example_function():
+          """Example function docstring."""
+          pass
+  - rule_id: "readme_sections"
+    description: "README must contain all required sections"
+    required: true
+    applies_to: ["README.md"]
+    example: "See README template"
+templates:
+  - template_id: readme
+    name: README Template
+    description: Main project documentation
+    file_name: README.md
+    applies_to: ["python"]
+    content: |
+      # {project_name}
+
+      {project_description}
+
+      ## Installation
+
+      ```bash
+      pip install -r requirements.txt
+      ```
+
+      ## Usage
+
+      ```python
+      {usage_example}
+      ```
+
+      ## Project Structure
+
+      {project_structure}
+
+      ## Contributing
+
+      {contributing_guidelines}
+
+      ## License
+
+      {license_info}
+    variables:
+      - name: project_name
+        description: Name of the project
+        required: true
+      - name: project_description
+        description: Brief description of the project
+        required: true
+      - name: usage_example
+        description: Example code showing how to use the project
+        required: true
+      - name: project_structure
+        description: Description of project directory structure
+        required: true
+      - name: contributing_guidelines
+        description: Guidelines for contributing to the project
+        required: false
+      - name: license_info
+        description: Project license information
+        required: false
+
+  - template_id: module_doc
+    name: Module Documentation
+    description: Documentation for Python modules
+    file_name: "{module_name}.py"
+    applies_to: ["python"]
+    content: |
+      """
+      {module_name}
+
+      {module_description}
+
+      Functions:
+      {function_list}
+
+      Classes:
+      {class_list}
+      """
+    variables:
+      - name: module_name
+        description: Name of the module
+        required: true
+      - name: module_description
+        description: Description of the module's purpose
+        required: true
+      - name: function_list
+        description: List of functions with descriptions
+        required: false
+      - name: class_list
+        description: List of classes with descriptions
+        required: false
+
+  - template_id: function_doc
+    name: Function Documentation
+    description: Documentation for Python functions
+    file_name: "{module_name}.py"
+    applies_to: ["python"]
+    content: |
+      def {function_name}({parameters}):
+          """
+          {function_description}
+
+          Args:
+              {args_description}
+
+          Returns:
+              {return_description}
+
+          Raises:
+              {exceptions}
+          """
+    variables:
+      - name: function_name
+        description: Name of the function
+        required: true
+      - name: parameters
+        description: Function parameters
+        required: true
+      - name: function_description
+        description: Description of what the function does
+        required: true
+      - name: args_description
+        description: Description of function arguments
+        required: true
+      - name: return_description
+        description: Description of return value
+        required: true
+      - name: exceptions
+        description: Exceptions that may be raised
+        required: false
+
+  - template_id: class_doc
+    name: Class Documentation
+    description: Documentation for Python classes
+    file_name: "{module_name}.py"
+    applies_to: ["python"]
+    content: |
+      class {class_name}:
+          """
+          {class_description}
+
+          Attributes:
+              {attributes}
+
+          Methods:
+              {methods}
+          """
+    variables:
+      - name: class_name
+        description: Name of the class
+        required: true
+      - name: class_description
+        description: Description of the class's purpose
+        required: true
+      - name: attributes
+        description: Class attributes with descriptions
+        required: false
+      - name: methods
+        description: Class methods with descriptions
+        required: false 

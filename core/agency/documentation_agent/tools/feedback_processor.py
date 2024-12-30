@@ -2,7 +2,7 @@
 from typing import Dict, List, Optional
 from datetime import datetime
 from core.services.logging import setup_logger
-from core.services.cache import cache_manager
+from core.services.cache.cache_manager import cache_manager
 from ..schemas.generated_content import GeneratedContent, DocumentFile
 
 logger = setup_logger(__name__)

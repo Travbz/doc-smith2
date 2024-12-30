@@ -3,176 +3,169 @@ from typing import Dict, List, Optional
 from pathlib import Path
 import yaml
 from core.services.logging import setup_logger
-from core.services.cache import cache_manager
+from core.services.cache.cache_manager import cache_manager
+from core.services.error_handling.error_handler import (
+    with_error_handling,
+    ErrorCategory,
+    ErrorSeverity,
+    DocSmithError
+)
 from ..schemas.documentation_standard import (
     DocumentationRule,
     TemplateVariable,
     DocumentationTemplate,
     DocumentationStandard
 )
+from ..schemas.repository_analysis import RepositoryAnalysis
 
 logger = setup_logger(__name__)
 
+class StandardSelectionError(DocSmithError):
+    """Specific error class for standard selection issues."""
+    def __init__(self, message: str, severity: ErrorSeverity = ErrorSeverity.MEDIUM):
+        super().__init__(
+            message,
+            category=ErrorCategory.DOC_GEN,
+            severity=severity,
+            recovery_hint="Verify standards directory exists and contains valid standard definitions"
+        )
+
 class StandardSelector:
-    """Selects and configures documentation standards based on repository type."""
+    """Selects and configures documentation standards."""
 
-    def __init__(self, standards_path: str = "standards"):
+    def __init__(self):
         """Initialize the standard selector."""
-        self.standards_path = Path(standards_path)
         self.cache = cache_manager
-        self._standards: Dict[str, DocumentationStandard] = {}
+        self.standards_dir = Path(__file__).parent.parent.parent.parent / "util" / "standards"
 
-    async def load_standards(self) -> None:
-        """Load all documentation standards from files."""
-        try:
-            # Check cache first
-            cached_standards = self.cache.get("documentation_standards")
-            if cached_standards:
-                self._standards = cached_standards
-                return
-
-            for standard_file in self.standards_path.glob("*.yaml"):
-                try:
-                    with open(standard_file, 'r') as f:
-                        data = yaml.safe_load(f)
-                        standard = DocumentationStandard(**data)
-                        self._standards[standard.repository_type] = standard
-                except Exception as e:
-                    logger.error(f"Error loading standard from {standard_file}: {str(e)}")
-
-            # Cache the standards
-            self.cache.set("documentation_standards", self._standards)
-
-        except Exception as e:
-            logger.error(f"Error loading standards: {str(e)}")
-            raise
-
-    async def select_standard(
-        self, 
-        repo_type: str,
-        custom_rules: Optional[List[DocumentationRule]] = None
+    @with_error_handling(ErrorCategory.DOC_GEN, ErrorSeverity.HIGH)
+    async def select(
+        self,
+        analysis: RepositoryAnalysis,
+        custom_rules: Optional[List[Dict]] = None
     ) -> DocumentationStandard:
-        """
-        Select appropriate documentation standard for a repository type.
-        
-        Args:
-            repo_type: Type of repository
-            custom_rules: Optional custom documentation rules
-            
-        Returns:
-            Selected DocumentationStandard
-        """
+        """Select appropriate documentation standard."""
         try:
-            # Ensure standards are loaded
-            if not self._standards:
-                await self.load_standards()
+            # Get repository type
+            repo_type = analysis.repository_type
 
-            # Get base standard
-            base_standard = self._standards.get(repo_type)
-            if not base_standard:
-                logger.warning(f"No standard found for {repo_type}, using unknown type standard")
-                base_standard = self._standards.get("unknown")
-                if not base_standard:
-                    raise ValueError("No default standard available")
+            # Load standard for repository type
+            standard = await self._load_standard(repo_type)
+            if not standard:
+                raise StandardSelectionError(
+                    f"No standard found for repository type: {repo_type}",
+                    ErrorSeverity.HIGH
+                )
 
             # Apply custom rules if provided
             if custom_rules:
-                logger.info("Applying custom documentation rules")
-                rules = list(base_standard.rules)  # Create copy of base rules
-                rules.extend(custom_rules)
-                return DocumentationStandard(
-                    **{**base_standard.dict(), "rules": rules}
-                )
+                standard = await self._apply_custom_rules(standard, custom_rules)
 
-            return base_standard
+            return standard
 
         except Exception as e:
-            logger.error(f"Error selecting standard: {str(e)}")
-            raise
+            if isinstance(e, StandardSelectionError):
+                raise
+            raise StandardSelectionError(
+                f"Failed to select documentation standard: {str(e)}",
+                ErrorSeverity.HIGH
+            ) from e
 
-    async def validate_standard(
-        self, 
-        standard: DocumentationStandard,
-        repo_path: str
-    ) -> bool:
-        """
-        Validate that a documentation standard can be applied to a repository.
-        
-        Args:
-            standard: Documentation standard to validate
-            repo_path: Path to repository
-            
-        Returns:
-            True if standard is valid for repository
-        """
+    @with_error_handling(ErrorCategory.DOC_GEN, ErrorSeverity.HIGH)
+    async def _load_standard(self, repo_type: str) -> Optional[DocumentationStandard]:
+        """Load documentation standard from file."""
         try:
-            repo_path = Path(repo_path)
-            
-            # Check required files exist
-            for required_file in standard.required_files:
-                if not (repo_path / required_file).exists():
-                    logger.warning(f"Required file missing: {required_file}")
-                    return False
+            # Check cache first
+            cache_key = f"standard_{repo_type}"
+            cached_standard = self.cache.get(cache_key)
+            if cached_standard:
+                return cached_standard
 
-            # Validate template variables
-            for template in standard.templates:
-                for variable in template.variables:
-                    if variable.required:
-                        # Here we would check if we can extract the required variable
-                        # from the repository. This is a simplified check.
-                        pass
+            # Load from file
+            standard_file = self.standards_dir / f"{repo_type}.yaml"
+            if not standard_file.exists():
+                logger.warning(f"Standard file not found: {standard_file}")
+                return None
 
-            return True
+            with open(standard_file, "r") as f:
+                data = yaml.safe_load(f)
+
+            # Create standard object
+            standard = DocumentationStandard(
+                name=data["name"],
+                description=data["description"],
+                version=data["version"],
+                repository_type=data["repository_type"],
+                required_files=data["required_files"],
+                optional_files=data.get("optional_files", []),
+                file_structure=data.get("file_structure", {}),
+                templates=[
+                    DocumentationTemplate(
+                        template_id=t["template_id"],
+                        name=t["name"],
+                        description=t["description"],
+                        content=t["content"],
+                        variables=[
+                            TemplateVariable(
+                                name=v["name"],
+                                description=v["description"],
+                                required=v.get("required", True),
+                                default=v.get("default")
+                            )
+                            for v in t["variables"]
+                        ],
+                        file_name=t["file_name"],
+                        applies_to=t["applies_to"]
+                    )
+                    for t in data["templates"]
+                ],
+                rules=[
+                    DocumentationRule(
+                        rule_id=r["rule_id"],
+                        description=r["description"],
+                        required=r.get("required", True),
+                        applies_to=r["applies_to"],
+                        example=r.get("example")
+                    )
+                    for r in data["rules"]
+                ]
+            )
+
+            # Cache the standard
+            self.cache.set(cache_key, standard)
+            return standard
 
         except Exception as e:
-            logger.error(f"Error validating standard: {str(e)}")
-            return False
+            raise StandardSelectionError(
+                f"Failed to load standard: {str(e)}",
+                ErrorSeverity.HIGH
+            ) from e
 
-    async def customize_standard(
+    @with_error_handling(ErrorCategory.DOC_GEN, ErrorSeverity.MEDIUM)
+    async def _apply_custom_rules(
         self,
-        base_standard: DocumentationStandard,
-        customizations: Dict
+        standard: DocumentationStandard,
+        custom_rules: List[Dict]
     ) -> DocumentationStandard:
-        """
-        Customize a documentation standard with specific requirements.
-        
-        Args:
-            base_standard: Base documentation standard
-            customizations: Custom settings to apply
-            
-        Returns:
-            Customized DocumentationStandard
-        """
+        """Apply custom rules to standard."""
         try:
-            # Create copy of base standard
-            custom_standard = DocumentationStandard(**base_standard.dict())
-            
-            # Apply customizations
-            if "rules" in customizations:
-                custom_rules = [DocumentationRule(**rule) for rule in customizations["rules"]]
-                custom_standard.rules.extend(custom_rules)
-                
-            if "templates" in customizations:
-                custom_templates = [DocumentationTemplate(**template) 
-                                  for template in customizations["templates"]]
-                custom_standard.templates.extend(custom_templates)
-                
-            if "required_files" in customizations:
-                custom_standard.required_files.extend(customizations["required_files"])
-                
-            if "file_structure" in customizations:
-                custom_standard.file_structure.update(customizations["file_structure"])
-                
-            return custom_standard
+            # Convert custom rules to DocumentationRule objects
+            rules = [
+                DocumentationRule(
+                    name=r["name"],
+                    type=r["type"],
+                    applies_to=r["applies_to"],
+                    criteria=r["criteria"]
+                )
+                for r in custom_rules
+            ]
+
+            # Add custom rules to standard
+            standard.rules.extend(rules)
+            return standard
 
         except Exception as e:
-            logger.error(f"Error customizing standard: {str(e)}")
-            raise
-
-    def get_template(
-        self,
-        standard: DocumentationStandard,
-        template_id: str
-    ) -> Optional[DocumentationTemplate]:
-        """Get a specific template from a standard."""
-        return next((t for t in standard.templates if t.template_id == template_id), None)
+            raise StandardSelectionError(
+                f"Failed to apply custom rules: {str(e)}",
+                ErrorSeverity.MEDIUM
+            ) from e

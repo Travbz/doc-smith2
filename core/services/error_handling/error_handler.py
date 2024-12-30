@@ -1,113 +1,132 @@
-from typing import Type, Callable, Any, Optional
+"""Enhanced error handling system with recovery mechanisms and reporting."""
+from typing import Type, Callable, Any, Optional, Dict, List, Union
 import functools
 import asyncio
-from datetime import datetime
+from datetime import datetime, timedelta
+from enum import Enum
+import json
+import traceback
 from core.services.logging.logging_service import setup_logger, log_exception
 from core.settings import MAX_RETRIES, RETRY_DELAY
 
-
 logger = setup_logger(__name__)
 
+class ErrorSeverity(Enum):
+    """Error severity levels."""
+    CRITICAL = "critical"  # System-wide failure, immediate attention required
+    HIGH = "high"         # Service disruption, needs prompt attention
+    MEDIUM = "medium"     # Degraded service, needs attention soon
+    LOW = "low"          # Minor issue, can be addressed later
+
+class ErrorCategory(Enum):
+    """Categories of errors for better organization."""
+    QUEUE = "queue"               # Queue processing errors
+    EVENT_BUS = "event_bus"       # Event bus communication errors
+    RATE_LIMIT = "rate_limit"     # Rate limiting and throttling
+    API = "api"                   # External API errors
+    DOC_GEN = "doc_gen"          # Documentation generation
+    DATABASE = "database"         # Database operations
+    NETWORK = "network"          # Network connectivity
+    SYSTEM = "system"            # System-level errors
+    UNKNOWN = "unknown"          # Uncategorized errors
+
 class DocSmithError(Exception):
-    """Base exception class for DocSmith."""
-    pass
-
-class RateLimitError(DocSmithError):
-    """Raised when rate limits are exceeded."""
-    pass
-
-class TokenLimitError(DocSmithError):
-    """Raised when token limits are exceeded."""
-    pass
-
-class ModelError(DocSmithError):
-    """Raised when there's an error with the model."""
-    pass
+    """Enhanced base exception class for DocSmith."""
+    def __init__(self, 
+                message: str,
+                category: ErrorCategory = ErrorCategory.UNKNOWN,
+                severity: ErrorSeverity = ErrorSeverity.MEDIUM,
+                context: Optional[Dict] = None,
+                recovery_hint: Optional[str] = None):
+        super().__init__(message)
+        self.category = category
+        self.severity = severity
+        self.context = context or {}
+        self.recovery_hint = recovery_hint
+        self.timestamp = datetime.now()
 
 class APIError(DocSmithError):
-    """Raised when there's an API error."""
-    pass
+    """Error class for API-related issues."""
+    def __init__(self, 
+                message: str,
+                severity: ErrorSeverity = ErrorSeverity.HIGH,
+                context: Optional[Dict] = None,
+                recovery_hint: Optional[str] = None):
+        super().__init__(
+            message,
+            category=ErrorCategory.API,
+            severity=severity,
+            context=context,
+            recovery_hint=recovery_hint or "Check API credentials and endpoint availability"
+        )
 
-def retry_with_exponential_backoff(
-    max_retries: int = MAX_RETRIES,
-    base_delay: float = RETRY_DELAY,
-    exponential_base: float = 2,
-    max_delay: float = 60,
-    allowed_exceptions: tuple = (RateLimitError, APIError)
-):
-    """Decorator for retrying functions with exponential backoff."""
+async def publish_error_event(error: DocSmithError):
+    """Publish error event to event bus."""
+    # Import here to avoid circular import
+    from core.services.event_bus.event_bus import event_bus, Event
+    
+    await event_bus.publish(Event(
+        type="error.occurred",
+        source="error_handler",
+        data={
+            "message": str(error),
+            "category": error.category.value,
+            "severity": error.severity.value,
+            "context": error.context,
+            "recovery_hint": error.recovery_hint,
+            "timestamp": error.timestamp.isoformat(),
+            "traceback": traceback.format_exc()
+        }
+    ))
+
+def with_error_handling(category: ErrorCategory, severity: ErrorSeverity):
+    """Decorator for handling errors in async functions."""
     def decorator(func: Callable):
         @functools.wraps(func)
         async def wrapper(*args, **kwargs):
-            last_exception = None
-            
-            for attempt in range(max_retries):
-                try:
-                    return await func(*args, **kwargs)
-                    
-                except allowed_exceptions as e:
-                    last_exception = e
-                    if attempt == max_retries - 1:
-                        raise
-                        
-                    delay = min(base_delay * (exponential_base ** attempt), max_delay)
-                    logger.warning(
-                        f"Attempt {attempt + 1}/{max_retries} failed: {str(e)}. "
-                        f"Retrying in {delay} seconds..."
+            last_error = None
+            try:
+                return await func(*args, **kwargs)
+            except Exception as e:
+                if isinstance(e, DocSmithError):
+                    error = e
+                else:
+                    error = DocSmithError(
+                        message=str(e),
+                        category=category,
+                        severity=severity,
+                        context={"args": args, "kwargs": kwargs}
                     )
-                    await asyncio.sleep(delay)
+                
+                # Log the error
+                log_exception(error)
+                
+                # Publish error event
+                await publish_error_event(error)
+                
+                # Handle based on severity
+                if error.severity in [ErrorSeverity.CRITICAL, ErrorSeverity.HIGH]:
+                    # Attempt recovery for critical errors
+                    for attempt in range(MAX_RETRIES):
+                        try:
+                            await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                            return await func(*args, **kwargs)
+                        except Exception as retry_error:
+                            last_error = retry_error
+                            continue
                     
-                except Exception as e:
-                    log_exception(logger, e, f"Error in {func.__name__}")
-                    raise
-                    
-            if last_exception:
-                raise last_exception
+                    # If all retries failed, raise the last error
+                    if last_error:
+                        if isinstance(last_error, DocSmithError):
+                            raise last_error
+                        raise DocSmithError(
+                            message=str(last_error),
+                            category=category,
+                            severity=severity,
+                            context={"args": args, "kwargs": kwargs}
+                        ) from last_error
+                
+                raise error
                 
         return wrapper
     return decorator
-
-class ErrorTracker:
-    """Track and analyze errors for monitoring and debugging."""
-    
-    def __init__(self):
-        self.errors = []
-        
-    def record_error(
-        self,
-        error: Exception,
-        context: Optional[str] = None,
-        metadata: Optional[dict] = None
-    ) -> None:
-        """Record an error with context and metadata."""
-        error_entry = {
-            'timestamp': datetime.now(),
-            'error_type': type(error).__name__,
-            'message': str(error),
-            'context': context,
-            'metadata': metadata or {}
-        }
-        self.errors.append(error_entry)
-        
-    def get_error_summary(self) -> dict:
-        """Get a summary of recorded errors."""
-        if not self.errors:
-            return {'total_errors': 0}
-            
-        error_types = {}
-        for error in self.errors:
-            error_type = error['error_type']
-            error_types[error_type] = error_types.get(error_type, 0) + 1
-            
-        return {
-            'total_errors': len(self.errors),
-            'error_types': error_types,
-            'latest_error': self.errors[-1]
-        }
-        
-    def clear_errors(self) -> None:
-        """Clear recorded errors."""
-        self.errors.clear()
-
-# Create singleton instance
-error_tracker = ErrorTracker()

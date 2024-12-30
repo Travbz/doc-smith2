@@ -2,9 +2,15 @@
 from typing import Dict, List, Optional
 from pathlib import Path
 import os
-import logging
+from datetime import datetime
 from core.services.logging import setup_logger
-from core.services.cache import cache_manager
+from core.services.cache.cache_manager import cache_manager
+from core.services.error_handling.error_handler import (
+    with_error_handling,
+    ErrorCategory,
+    ErrorSeverity,
+    DocSmithError
+)
 from ..schemas.repository_analysis import (
     FileInfo,
     DirectoryInfo,
@@ -13,6 +19,16 @@ from ..schemas.repository_analysis import (
 )
 
 logger = setup_logger(__name__)
+
+class RepositoryAnalysisError(DocSmithError):
+    """Specific error class for repository analysis issues."""
+    def __init__(self, message: str, severity: ErrorSeverity = ErrorSeverity.MEDIUM):
+        super().__init__(
+            message,
+            category=ErrorCategory.DOC_GEN,
+            severity=severity,
+            recovery_hint="Verify repository path and permissions, ensure repository structure is valid"
+        )
 
 class RepositoryAnalyzer:
     """Analyzes repository structure and determines repository type."""
@@ -49,161 +65,162 @@ class RepositoryAnalyzer:
         """Initialize the repository analyzer."""
         self.cache = cache_manager
 
-    async def analyze_repository(self, repo_path: str) -> RepositoryAnalysis:
-        """
-        Analyze a repository and determine its type and structure.
-        
-        Args:
-            repo_path: Path to the repository root
-            
-        Returns:
-            RepositoryAnalysis object with analysis results
-        """
-        logger.info(f"Analyzing repository at: {repo_path}")
-        
+    @with_error_handling(ErrorCategory.DOC_GEN, ErrorSeverity.HIGH)
+    async def analyze(self, repo_path: str, repo_type: Optional[str] = None) -> RepositoryAnalysis:
+        """Analyze repository structure and determine type."""
+        if not os.path.exists(repo_path):
+            raise RepositoryAnalysisError(
+                f"Repository path does not exist: {repo_path}",
+                ErrorSeverity.HIGH
+            )
+
         try:
             # Check cache first
             cache_key = f"repo_analysis_{repo_path}"
-            cached_result = self.cache.get(cache_key)
-            if cached_result:
-                logger.info("Using cached repository analysis")
-                return cached_result
+            cached_analysis = self.cache.get(cache_key)
+            if cached_analysis and not repo_type:
+                return cached_analysis
 
-            # Get repository structure
-            root_dir = await self._analyze_directory(Path(repo_path))
-            
-            # Detect patterns
-            patterns = await self._detect_patterns(repo_path)
+            # Analyze directory structure
+            structure = await self._analyze_directory(Path(repo_path))
             
             # Determine repository type
-            repo_type = await self._determine_repo_type(patterns)
-            
-            # Get language statistics
-            languages = await self._analyze_languages(repo_path)
-            
+            detected_type = repo_type or await self._detect_repo_type(structure)
+            if not detected_type:
+                detected_type = "unknown"  # Default to unknown if type cannot be determined
+
             # Create analysis result
             analysis = RepositoryAnalysis(
-                repository_type=repo_type,
-                root_directory=root_dir,
-                detected_patterns=patterns,
-                languages=languages,
-                primary_language=max(languages.items(), key=lambda x: x[1])[0] if languages else None,
-                total_files=sum(1 for _ in Path(repo_path).rglob("*") if _.is_file()),
-                total_size=sum(_.stat().st_size for _ in Path(repo_path).rglob("*") if _.is_file()),
-                analysis_timestamp=str(datetime.now())
+                repository_path=repo_path,
+                repository_type=detected_type,
+                structure=structure,
+                patterns=await self._extract_patterns(structure, detected_type)
             )
-            
+
             # Cache the result
             self.cache.set(cache_key, analysis)
-            
             return analysis
-            
+
         except Exception as e:
-            logger.error(f"Error analyzing repository: {str(e)}", exc_info=True)
-            raise
+            if isinstance(e, RepositoryAnalysisError):
+                raise
+            raise RepositoryAnalysisError(
+                f"Failed to analyze repository: {str(e)}",
+                ErrorSeverity.HIGH
+            ) from e
 
+    @with_error_handling(ErrorCategory.DOC_GEN, ErrorSeverity.MEDIUM)
     async def _analyze_directory(self, path: Path) -> DirectoryInfo:
-        """Analyze a directory and its contents."""
-        files = []
-        subdirs = []
-        
-        for item in path.iterdir():
-            if item.is_file():
-                files.append(FileInfo(
-                    path=str(item.relative_to(path.parent)),
-                    type=item.suffix,
-                    size=item.stat().st_size,
-                    last_modified=str(datetime.fromtimestamp(item.stat().st_mtime))
-                ))
-            elif item.is_dir() and not item.name.startswith('.'):
-                subdirs.append(item.name)
-                
-        return DirectoryInfo(
-            path=str(path.relative_to(path.parent)),
-            files=files,
-            subdirectories=subdirs
-        )
+        """Analyze directory structure recursively."""
+        try:
+            files = []
+            subdirectories = []
+            subdirectory_info = []
 
-    async def _detect_patterns(self, repo_path: str) -> RepositoryPatterns:
-        """Detect repository patterns."""
-        patterns = RepositoryPatterns()
-        repo_path = Path(repo_path)
-        
-        for repo_type, type_patterns in self.REPO_TYPE_PATTERNS.items():
-            detected = []
-            for pattern in type_patterns:
-                pattern_path = repo_path / pattern
-                if pattern_path.exists():
-                    detected.append(pattern)
-                    
-            if repo_type == "spring_boot":
-                patterns.spring_boot_patterns = detected
-            elif repo_type == "nginx":
-                patterns.nginx_patterns = detected
-            elif repo_type == "bounded_context":
-                patterns.bounded_context_patterns = detected
-            elif repo_type == "python":
-                patterns.python_patterns = detected
-                
-        return patterns
+            for item in path.iterdir():
+                if item.is_file():
+                    stat = item.stat()
+                    files.append(FileInfo(
+                        name=item.name,
+                        path=str(item.relative_to(path)),
+                        size=stat.st_size,
+                        type=item.suffix[1:] if item.suffix else "unknown",
+                        last_modified=datetime.fromtimestamp(stat.st_mtime).isoformat()
+                    ))
+                elif item.is_dir() and not item.name.startswith('.'):
+                    subdirectories.append(item.name)
+                    subdirectory_info.append(await self._analyze_directory(item))
 
-    async def _determine_repo_type(self, patterns: RepositoryPatterns) -> str:
-        """Determine repository type based on detected patterns."""
-        pattern_counts = {
-            "spring_boot": len(patterns.spring_boot_patterns),
-            "nginx": len(patterns.nginx_patterns),
-            "bounded_context": len(patterns.bounded_context_patterns),
-            "python": len(patterns.python_patterns)
-        }
-        
-        # Require at least 2 matching patterns for a type
-        matches = {k: v for k, v in pattern_counts.items() if v >= 2}
-        
-        if not matches:
-            return "unknown"
+            return DirectoryInfo(
+                name=path.name,
+                path=str(path),
+                files=files,
+                subdirectories=subdirectories,
+                subdirectory_info=subdirectory_info
+            )
+
+        except Exception as e:
+            raise RepositoryAnalysisError(
+                f"Failed to analyze directory {path}: {str(e)}",
+                ErrorSeverity.MEDIUM
+            ) from e
+
+    @with_error_handling(ErrorCategory.DOC_GEN, ErrorSeverity.MEDIUM)
+    async def _detect_repo_type(self, structure: DirectoryInfo) -> Optional[str]:
+        """Detect repository type based on file patterns."""
+        try:
+            matches = {repo_type: 0 for repo_type in self.REPO_TYPE_PATTERNS}
             
-        return max(matches.items(), key=lambda x: x[1])[0]
+            for pattern_type, patterns in self.REPO_TYPE_PATTERNS.items():
+                for pattern in patterns:
+                    if self._find_pattern(structure, pattern):
+                        matches[pattern_type] += 1
 
-    async def _analyze_languages(self, repo_path: str) -> Dict[str, int]:
-        """Analyze programming languages used in the repository."""
-        extensions = {
-            ".py": "Python",
-            ".java": "Java",
-            ".js": "JavaScript",
-            ".ts": "TypeScript",
-            ".go": "Go",
-            ".rb": "Ruby",
-            ".php": "PHP",
-            ".cs": "C#",
-            ".cpp": "C++",
-            ".rs": "Rust",
-            ".swift": "Swift",
-            ".kt": "Kotlin",
-            ".scala": "Scala",
-            ".html": "HTML",
-            ".css": "CSS",
-            ".sql": "SQL",
-            ".sh": "Shell",
-            ".tf": "Terraform",
-            ".yaml": "YAML",
-            ".yml": "YAML",
-            ".json": "JSON",
-            ".md": "Markdown"
-        }
+            # Find type with most matches
+            if matches:
+                best_match = max(matches.items(), key=lambda x: x[1])
+                if best_match[1] > 0:
+                    return best_match[0]
+
+            return None
+
+        except Exception as e:
+            raise RepositoryAnalysisError(
+                f"Failed to detect repository type: {str(e)}",
+                ErrorSeverity.MEDIUM
+            ) from e
+
+    @with_error_handling(ErrorCategory.DOC_GEN, ErrorSeverity.LOW)
+    async def _extract_patterns(self, structure: DirectoryInfo, repo_type: str) -> RepositoryPatterns:
+        """Extract common patterns for the repository type."""
+        try:
+            # Get patterns for the repository type, or use an empty list if type is unknown
+            type_patterns = self.REPO_TYPE_PATTERNS.get(repo_type, [])
+            
+            return RepositoryPatterns(
+                repository_type=repo_type,
+                common_files=[p for p in type_patterns if self._find_pattern(structure, p)],
+                detected_languages=await self._detect_languages(structure)
+            )
+
+        except Exception as e:
+            raise RepositoryAnalysisError(
+                f"Failed to extract patterns: {str(e)}",
+                ErrorSeverity.LOW
+            ) from e
+
+    def _find_pattern(self, structure: DirectoryInfo, pattern: str) -> bool:
+        """Find if a pattern exists in the directory structure."""
+        for file in structure.files:
+            if pattern in file.path or pattern == file.name:
+                return True
         
-        language_lines = {}
-        repo_path = Path(repo_path)
-        
-        for ext, lang in extensions.items():
-            line_count = 0
-            for file_path in repo_path.rglob(f"*{ext}"):
-                try:
-                    with open(file_path, 'r', encoding='utf-8') as f:
-                        line_count += sum(1 for _ in f)
-                except Exception:
-                    continue
-                    
-            if line_count > 0:
-                language_lines[lang] = line_count
+        for directory in structure.subdirectory_info:
+            if pattern in directory.path or pattern == directory.name:
+                return True
+            if self._find_pattern(directory, pattern):
+                return True
                 
-        return language_lines
+        return False
+
+    @with_error_handling(ErrorCategory.DOC_GEN, ErrorSeverity.LOW)
+    async def _detect_languages(self, structure: DirectoryInfo) -> Dict[str, int]:
+        """Detect programming languages used in the repository."""
+        try:
+            languages = {}
+            for file in structure.files:
+                if file.type in ["py", "java", "js", "ts", "go", "rb", "php", "cs"]:
+                    languages[file.type] = languages.get(file.type, 0) + 1
+            
+            for directory in structure.subdirectory_info:
+                subdir_languages = await self._detect_languages(directory)
+                for lang, count in subdir_languages.items():
+                    languages[lang] = languages.get(lang, 0) + count
+            
+            return languages
+
+        except Exception as e:
+            raise RepositoryAnalysisError(
+                f"Failed to detect languages: {str(e)}",
+                ErrorSeverity.LOW
+            ) from e

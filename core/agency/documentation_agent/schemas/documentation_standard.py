@@ -28,13 +28,13 @@ class DocumentationTemplate(BaseModel):
     applies_to: List[str] = Field(..., description="Repository types this template applies to")
 
 class DocumentationStandard(BaseModel):
-    """Complete documentation standard for a repository type."""
-    repository_type: str = Field(..., description="Repository type this standard applies to")
-    name: str = Field(..., description="Name of the documentation standard")
-    description: str = Field(..., description="Description of the standard")
-    version: str = Field(..., description="Version of the standard")
-    rules: List[DocumentationRule] = Field(..., description="Documentation rules")
+    """Standard for documentation generation."""
+    name: str = Field(..., description="Standard name")
+    description: str = Field(..., description="Standard description")
+    version: str = Field(..., description="Standard version")
+    repository_type: str = Field(..., description="Type of repository this standard applies to")
+    required_files: List[str] = Field(..., description="Required files for this standard")
+    optional_files: List[str] = Field(default_factory=list, description="Optional files for this standard")
+    file_structure: Dict[str, str] = Field(default_factory=dict, description="Expected file structure")
     templates: List[DocumentationTemplate] = Field(..., description="Documentation templates")
-    required_files: List[str] = Field(..., description="Required documentation files")
-    optional_files: List[str] = Field(..., description="Optional documentation files")
-    file_structure: Dict[str, str] = Field(..., description="Expected documentation file structure")
+    rules: List[DocumentationRule] = Field(..., description="Documentation rules")

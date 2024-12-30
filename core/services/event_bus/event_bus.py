@@ -1,4 +1,4 @@
-"""Event bus for agent and workflow communication."""
+"""Event bus for inter-agent communication."""
 from typing import Dict, List, Callable, Any, Optional
 import asyncio
 from dataclasses import dataclass, field
@@ -9,101 +9,90 @@ logger = setup_logger(__name__)
 
 @dataclass
 class Event:
-    """Represents a system event."""
+    """Event data structure."""
     type: str
     source: str
-    data: Dict[str, Any]
-    timestamp: datetime = field(default_factory=datetime.now)
-    id: Optional[str] = None
-
-    def __getitem__(self, key):
-        """Allow dictionary-like access to data field."""
-        return self.data[key]
-
-    def get(self, key, default=None):
-        """Allow dictionary-like get access to data field."""
-        return self.data.get(key, default)
+    data: Dict[str, Any] = field(default_factory=dict)
+    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
 
 class EventBus:
-    """Central event bus for system-wide communication."""
+    """Event bus for handling inter-agent communication."""
     
     def __init__(self):
-        self.subscribers: Dict[str, List[Callable]] = {}
-        self.event_history: List[Event] = []
-        self._queue = asyncio.Queue()
+        """Initialize event bus."""
+        self._subscribers: Dict[str, List[Callable]] = {}
         self._running = False
-        self._task = None
+        self._queue: asyncio.Queue = asyncio.Queue()
+        self._task: Optional[asyncio.Task] = None
         
     async def start(self):
-        """Start processing events."""
-        logger.info("Starting event bus")
+        """Start the event bus."""
+        if self._running:
+            return
+            
         self._running = True
         self._task = asyncio.create_task(self._process_events())
+        logger.info("Event bus started")
         
     async def stop(self):
-        """Stop processing events."""
-        logger.info("Stopping event bus")
+        """Stop the event bus."""
+        if not self._running:
+            return
+            
         self._running = False
         if self._task:
+            self._task.cancel()
             try:
-                await self._queue.join()
-                self._task.cancel()
                 await self._task
             except asyncio.CancelledError:
                 pass
         logger.info("Event bus stopped")
         
-    async def publish(self, event: Event) -> None:
-        """Publish an event to all subscribers."""
-        if not isinstance(event, Event):
-            event = Event(**event if isinstance(event, dict) else {"type": str(event), "source": "unknown", "data": {}})
-            
-        logger.debug(f"Publishing event: {event.type} from {event.source}")
-        self.event_history.append(event)
+    def subscribe(self, event_type: str, callback: Callable):
+        """Subscribe to an event type."""
+        if event_type not in self._subscribers:
+            self._subscribers[event_type] = []
+        self._subscribers[event_type].append(callback)
+        logger.info(f"Subscribed to {event_type} with callback {callback.__qualname__}")
+        return callback  # Return the callback for chaining
+        
+    def unsubscribe(self, event_type: str, callback: Callable):
+        """Unsubscribe from an event type."""
+        if event_type in self._subscribers:
+            self._subscribers[event_type].remove(callback)
+            if not self._subscribers[event_type]:
+                del self._subscribers[event_type]
+            logger.info(f"Unsubscribed from {event_type} with callback {callback.__qualname__}")
+        
+    async def publish(self, event: Event):
+        """Publish an event."""
         await self._queue.put(event)
+        logger.info(f"Published event: {event.type} from {event.source} with data: {event.data}")
         
-    def subscribe(self, event_type: str, callback: Callable) -> None:
-        """Subscribe to events of a specific type."""
-        if event_type not in self.subscribers:
-            self.subscribers[event_type] = []
-        if callback not in self.subscribers[event_type]:
-            self.subscribers[event_type].append(callback)
-            logger.debug(f"Added subscriber for {event_type}")
-        
-    def unsubscribe(self, event_type: str, callback: Callable) -> None:
-        """Unsubscribe from events of a specific type."""
-        if event_type in self.subscribers and callback in self.subscribers[event_type]:
-            self.subscribers[event_type].remove(callback)
-            logger.debug(f"Removed subscriber for {event_type}")
-            
-    async def _process_events(self) -> None:
+    async def _process_events(self):
         """Process events from the queue."""
         while self._running:
             try:
                 event = await self._queue.get()
-                if event.type in self.subscribers:
-                    subscribers = self.subscribers[event.type].copy()  # Create a copy to avoid modification during iteration
-                    for callback in subscribers:
-                        try:
-                            await callback(event)
-                        except Exception as e:
-                            logger.error(f"Error in event handler: {str(e)}", exc_info=True)
-                            
+                subscribers = self._subscribers.get(event.type, [])
+                logger.info(f"Processing event: {event.type} with {len(subscribers)} subscribers")
+                
+                for callback in subscribers:
+                    try:
+                        logger.info(f"Calling handler {callback.__qualname__} for event {event.type}")
+                        await callback(event.data)
+                    except Exception as e:
+                        logger.error(f"Error in event handler {callback.__qualname__} for event {event.type}: {str(e)}")
+                        
                 self._queue.task_done()
+                logger.info(f"Finished processing event: {event.type}")
                 
             except asyncio.CancelledError:
                 break
             except Exception as e:
-                logger.error(f"Error processing event: {str(e)}", exc_info=True)
-                continue
-
-    def get_event_history(self) -> List[Event]:
-        """Get the history of processed events."""
-        return self.event_history.copy()
-
-    def clear_history(self) -> None:
-        """Clear the event history."""
-        self.event_history.clear()
+                logger.error(f"Error processing event: {str(e)}")
+                
+        logger.info("Event processing stopped")
 
 # Create singleton instance
 event_bus = EventBus()

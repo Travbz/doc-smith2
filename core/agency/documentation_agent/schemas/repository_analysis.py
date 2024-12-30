@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 
 class FileInfo(BaseModel):
     """Information about a specific file in the repository."""
+    name: str = Field(..., description="Name of the file")
     path: str = Field(..., description="Path to the file relative to repository root")
     type: str = Field(..., description="File type/extension")
     size: int = Field(..., description="File size in bytes")
@@ -11,25 +12,23 @@ class FileInfo(BaseModel):
 
 class DirectoryInfo(BaseModel):
     """Information about a directory in the repository."""
+    name: str = Field(..., description="Name of the directory")
     path: str = Field(..., description="Path to directory relative to repository root")
     files: List[FileInfo] = Field(default_factory=list, description="Files in this directory")
-    subdirectories: List[str] = Field(default_factory=list, description="Subdirectory names")
+    subdirectories: List[str] = Field(default_factory=list, description="Names of subdirectories")
+    subdirectory_info: List["DirectoryInfo"] = Field(default_factory=list, description="Detailed information about subdirectories")
+
+DirectoryInfo.model_rebuild()
 
 class RepositoryPatterns(BaseModel):
     """Detected patterns in the repository."""
-    spring_boot_patterns: List[str] = Field(default_factory=list, description="Spring Boot related files/patterns")
-    nginx_patterns: List[str] = Field(default_factory=list, description="NGINX related files/patterns")
-    bounded_context_patterns: List[str] = Field(default_factory=list, description="Helm/Terraform related patterns")
-    python_patterns: List[str] = Field(default_factory=list, description="Python related files/patterns")
-    unknown_patterns: List[str] = Field(default_factory=list, description="Unrecognized patterns")
+    repository_type: str = Field(..., description="Type of repository detected")
+    common_files: List[str] = Field(default_factory=list, description="Common files found for the repository type")
+    detected_languages: Dict[str, int] = Field(default_factory=dict, description="Programming languages detected and their line counts")
 
 class RepositoryAnalysis(BaseModel):
     """Complete repository analysis results."""
+    repository_path: str = Field(..., description="Path to the repository")
     repository_type: str = Field(..., description="Detected repository type")
-    root_directory: DirectoryInfo = Field(..., description="Repository root directory info")
-    detected_patterns: RepositoryPatterns = Field(..., description="Detected repository patterns")
-    languages: Dict[str, int] = Field(default_factory=dict, description="Languages and their line counts")
-    primary_language: Optional[str] = Field(None, description="Primary repository language")
-    total_files: int = Field(..., description="Total number of files")
-    total_size: int = Field(..., description="Total repository size in bytes")
-    analysis_timestamp: str = Field(..., description="Timestamp of analysis")
+    structure: DirectoryInfo = Field(..., description="Repository directory structure")
+    patterns: RepositoryPatterns = Field(..., description="Detected repository patterns")

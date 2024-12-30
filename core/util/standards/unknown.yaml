@@ -1,0 +1,100 @@
+name: Generic Documentation Standard
+version: "1.0"
+repository_type: unknown
+description: Standard for repositories with unknown type
+required_files:
+  - README.md
+  - docs/
+optional_files:
+  - CONTRIBUTING.md
+  - LICENSE
+  - CHANGELOG.md
+file_structure:
+  docs: "Documentation files directory"
+  src: "Source code directory"
+rules:
+  - rule_id: "readme_required"
+    description: "Repository must have a README file with essential sections"
+    required: true
+    applies_to: ["README.md"]
+    example: "See README template"
+  - rule_id: "docs_folder"
+    description: "Repository should have a docs folder for detailed documentation"
+    required: false
+    applies_to: ["docs/"]
+templates:
+  - template_id: readme
+    name: README Template
+    description: Main project documentation
+    file_name: README.md
+    applies_to: ["*"]
+    content: |
+      # {project_name}
+
+      {project_description}
+
+      ## Project Structure
+
+      {project_structure}
+
+      ## Usage
+
+      {usage_instructions}
+
+      ## Contributing
+
+      {contributing_guidelines}
+
+      ## License
+
+      {license_info}
+    variables:
+      - name: project_name
+        description: Name of the project
+        required: true
+      - name: project_description
+        description: Brief description of the project
+        required: true
+      - name: project_structure
+        description: Description of project directory structure
+        required: true
+      - name: usage_instructions
+        description: Instructions for using the project
+        required: true
+      - name: contributing_guidelines
+        description: Guidelines for contributing to the project
+        required: false
+      - name: license_info
+        description: Project license information
+        required: false
+
+  - template_id: module_doc
+    name: Module Documentation
+    description: Documentation for code modules
+    file_name: "{module_name}.md"
+    applies_to: ["*"]
+    content: |
+      # {module_name}
+
+      {module_description}
+
+      ## Functions
+
+      {function_list}
+
+      ## Classes
+
+      {class_list}
+    variables:
+      - name: module_name
+        description: Name of the module
+        required: true
+      - name: module_description
+        description: Description of the module's purpose
+        required: true
+      - name: function_list
+        description: List of functions with descriptions
+        required: false
+      - name: class_list
+        description: List of classes with descriptions
+        required: false 
